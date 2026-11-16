@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DBMS Lab - Exp 8 & 9 SQL Code</title>
+<style>
+  :root { --bg:#f4f6fb; --card:#fff; --text:#1c2333; --muted:#5b6478; --pre:#0f172a; --pretext:#e2e8f0; --accent:#2563eb; --ok:#16a34a; --border:#dde3ee; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0b1020; --card:#141b2f; --text:#e8ecf6; --muted:#9aa5bf; --pre:#070b17; --border:#27304a; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); padding:24px 16px 60px; }
+  .wrap { max-width:900px; margin:0 auto; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 24px; font-size:14px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:28px; }
+  .card h2 { margin:0 0 4px; font-size:18px; }
+  .card p { margin:0 0 14px; color:var(--muted); font-size:13px; }
+  .btns { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  button { cursor:pointer; border:0; border-radius:10px; padding:11px 18px; font-size:14px; font-weight:600; background:var(--accent); color:#fff; transition:.15s; }
+  button.alt { background:transparent; color:var(--accent); border:1.5px solid var(--accent); }
+  button:hover { filter:brightness(1.1); }
+  button.done { background:var(--ok); border-color:var(--ok); color:#fff; }
+  .label { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:14px 0 6px; font-weight:600; }
+  pre { margin:0; background:var(--pre); color:var(--pretext); padding:14px 16px; border-radius:10px; overflow-x:auto; font-family:Consolas,"Courier New",monospace; font-size:13px; line-height:1.55; max-height:380px; overflow-y:auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>DBMS Lab (MA-315) - SQL Code</h1>
+  <p class="sub">Button dabao, code copy ho jayega. Phir MySQL Workbench me paste karke Ctrl+Shift+Enter (execute all) chalao.</p>
+
+  <!-- ============ EXP 8 ============ -->
+  <div class="card">
+    <h2>Experiment 8 - Library Information System</h2>
+    <p>Database: LibraryDB &nbsp;|&nbsp; Tables: BOOK, MEMBER, ISSUE</p>
+    <div class="btns">
+      <button data-target="e8-create">Copy Exp 8 - Create Code</button>
+      <button class="alt" data-target="e8-insert">Copy Exp 8 - Insert Code</button>
+      <button class="alt" data-target="e8-create,e8-insert">Copy Both</button>
+    </div>
+    <div class="label">Create Database and Tables</div>
+<pre id="e8-create">CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
+CREATE TABLE BOOK (
+    BookID INT PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    Author VARCHAR(50),
+    Publisher VARCHAR(50),
+    Category VARCHAR(30),
+    Price DECIMAL(8,2),
+    AvailableCopies INT
+);
+
+CREATE TABLE MEMBER (
+    MemberID INT PRIMARY KEY,
+    MemberName VARCHAR(50) NOT NULL,
+    Department VARCHAR(50),
+    Phone VARCHAR(15),
+    Email VARCHAR(100)
+);
+
+CREATE TABLE ISSUE (
+    IssueID INT PRIMARY KEY,
+    BookID INT,
+    MemberID INT,
+    IssueDate DATE,
+    DueDate DATE,
+    ReturnDate DATE,
+    FOREIGN KEY (BookID) REFERENCES BOOK(BookID),
+    FOREIGN KEY (MemberID) REFERENCES MEMBER(MemberID)
+);
+
+SHOW TABLES;</pre>
+    <div class="label">Insert Sample Records</div>
+<pre id="e8-insert">INSERT INTO BOOK VALUES
+(111,'Database Management Systems','Ramakrishnan','McGraw Hill','DBMS',720,4),
+(112,'Computer Organization','Mano','Pearson','Architecture',480,7),
+(113,'Discrete Mathematics','Rosen','McGraw Hill','Mathematics',590,2),
+(114,'Learning SQL','Beaulieu','Oreilly','DBMS',430,5),
+(115,'Operating System Concepts','Galvin','Wiley','OS',680,3);
+
+INSERT INTO MEMBER VALUES
+(1,'Neha Kapoor','CSE','9812345601','neha@gmail.com'),
+(2,'Arjun Mehta','M&amp;C','9812345602','arjun@gmail.com'),
+(3,'Simran Kaur','ECE','9812345603','simran@gmail.com'),
+(4,'Vikram Rana','M&amp;C','9812345604','vikram@gmail.com'),
+(5,'Tanya Bisht','CSE','9812345605','tanya@gmail.com'),
+(6,'Kabir Thakur','ME','9812345606','kabir@gmail.com');
+
+INSERT INTO ISSUE VALUES
+(1,111,1,'2026-10-02','2026-10-16','2026-10-14'),
+(2,112,2,'2026-10-04','2026-10-18',NULL),
+(3,113,3,'2026-10-06','2026-10-20','2026-10-22'),
+(4,114,4,'2026-10-09','2026-10-23',NULL),
+(5,115,5,'2026-10-11','2026-10-25','2026-10-24'),
+(6,112,1,'2026-10-15','2026-10-29',NULL);
+
+SELECT * FROM BOOK;
+SELECT * FROM MEMBER;
+SELECT * FROM ISSUE;</pre>
+  </div>
+
+  <!-- ============ EXP 9 ============ -->
+  <div class="card">
+    <h2>Experiment 9 - Student Information System</h2>
+    <p>Database: StudentDB &nbsp;|&nbsp; Tables: DEPARTMENT, STUDENT, COURSE, MARKS</p>
+    <div class="btns">
+      <button data-target="e9-create">Copy Exp 9 - Create Code</button>
+      <button class="alt" data-target="e9-insert">Copy Exp 9 - Insert Code</button>
+      <button class="alt" data-target="e9-create,e9-insert">Copy Both</button>
+    </div>
+    <div class="label">Create Database and Tables</div>
+<pre id="e9-create">CREATE DATABASE StudentDB;
+USE StudentDB;
+
+CREATE TABLE DEPARTMENT (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE STUDENT (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(50) NOT NULL,
+    Gender VARCHAR(10),
+    DOB DATE,
+    Phone VARCHAR(15),
+    Email VARCHAR(100),
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES DEPARTMENT(DeptID)
+);
+
+CREATE TABLE COURSE (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50) NOT NULL,
+    Credits INT,
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES DEPARTMENT(DeptID)
+);
+
+CREATE TABLE MARKS (
+    MarkID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    MarksObtained INT,
+    FOREIGN KEY (StudentID) REFERENCES STUDENT(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES COURSE(CourseID)
+);
+
+SHOW TABLES;</pre>
+    <div class="label">Insert Sample Records</div>
+<pre id="e9-insert">INSERT INTO DEPARTMENT VALUES
+(1,'Computer Science'),
+(2,'Mathematics'),
+(3,'Physics'),
+(4,'Civil Engineering');
+
+INSERT INTO STUDENT VALUES
+(201,'Rohit Sharma','Male','2005-03-12','9811122201','rohit@gmail.com',1),
+(202,'Ananya Singh','Female','2005-07-24','9811122202','ananya@gmail.com',2),
+(203,'Kabir Malhotra','Male','2004-12-05','9811122203','kabir@gmail.com',1),
+(204,'Meera Nair','Female','2005-02-17','9811122204','meera@gmail.com',3),
+(205,'Aditya Verma','Male','2004-09-30','9811122205','aditya@gmail.com',4),
+(206,'Ishita Joshi','Female','2005-05-09','9811122206','ishita@gmail.com',2);
+
+INSERT INTO COURSE VALUES
+(301,'DBMS',4,1),
+(302,'Algorithms',4,1),
+(303,'Calculus',3,2),
+(304,'Probability',3,2),
+(305,'Quantum Physics',4,3),
+(306,'Structural Analysis',3,4);
+
+INSERT INTO MARKS VALUES
+(1,201,301,82),
+(2,201,302,91),
+(3,202,303,88),
+(4,202,304,94),
+(5,203,301,79),
+(6,203,302,85),
+(7,204,305,90),
+(8,205,306,72),
+(9,206,303,96),
+(10,206,304,89);
+
+SELECT * FROM DEPARTMENT;
+SELECT * FROM STUDENT;
+SELECT * FROM COURSE;
+SELECT * FROM MARKS;</pre>
+  </div>
+</div>
+
+<script>
+function getText(ids) {
+  return ids.split(',').map(function (id) {
+    return document.getElementById(id).textContent.trim();
+  }).join('\n\n');
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  return ok;
+}
+document.querySelectorAll('button[data-target]').forEach(function (btn) {
+  var original = btn.textContent;
+  btn.addEventListener('click', function () {
+    var text = getText(btn.getAttribute('data-target'));
+    function success() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('done');
+      setTimeout(function () { btn.textContent = original; btn.classList.remove('done'); }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(success, function () {
+        if (fallbackCopy(text)) success();
+      });
+    } else if (fallbackCopy(text)) {
+      success();
+    }
+  });
+});
+</script>
+</body>
+</html>
